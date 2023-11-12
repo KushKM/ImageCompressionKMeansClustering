@@ -27,4 +27,30 @@ Eli Line-Im: Ran K mean algorithm on two nature images along with creating an el
 We are using pandas and numpy for parts of our EDA and generating our elbow graphs so we can visualize our results and perform various calculations. Matplotlib helps with visualizing the data as well. The skimage library is what allows us to import and use the image in tandem with the sklearn library from which we import the k-means clustering algorithm. Finally we use the cv2 library to import images and vectorize them alongside pandas for the EDA part.
 
 ## Data Collection & Cleaning
-We read in the images through
+We read in the images through the use of CV2 (computer vision) library, and then vectorize the pixels into RGB columns and create dataframes for each image. 
+
+![image](readme_images/rgbchart.png)
+
+## EDA
+For our explatory data analysis we take the dataframes we made for each image and calculate the median for each RGB column. We then plot them against each other to compare the variance in the color pixel values. We are looking to see if there is a relation between the variance in pixel color values and the optimal k-value observed, both between the different categories and within the individual images. These bar charts help us visualize which images have significant variances and which ones seem to have an uniform distribution.
+
+![image](readme_images/edafirstimage.png)
+![image](readme_images/edawomenimage.png)
+
+## K-Means Clustering Algorithm
+This is where we conduct our analysis by running the k-means clustering algorithm on each image. We did this by reading in the image, reshaping them to fit into the algorithm, and then running it. We call the algorithm with the desired number of iterations and the k-value, fitting it to the image, and then recluster it with a new center and compress them.
+
+![image](readme_images/natureslide.png)
+
+After running the K-mean Algorithm on the first nature image, we can see that the best max K value was 64 because the compressed image is extremely identical to the original image. However, the compressed image is still acceptable at k = 16 because the compressed image still has equal variability in color as the original image. Yet, this does not hold true for k = 8 because we can see that the variability in color is no longer the same as the flowers no longer have a reddish pinkish color. Furthermore, as k gets smaller which can be seen at k = 4, the image is no acceptable in terms of the color when comparing itself to the original image because when k does equal 4 like in one of the compressed images above, there seems to be no difference in colors between the types of flowers, and along with the sun and mountains. Even though this is the case, the image is still acceptable at k = 4 because even though there is a loss of color contrast between the details, the shapes and the placements of the objects within the image do not differ from the original image. Thus, the smallest value k can be to output an acceptable compressed image is 4.
+
+![image](readme_images/elbowgraph.png)
+
+After visualizing the clusters across the SSE for the first nature image, we can see that by the Elbow Method the best acceptable number of clusters for k is 3. The number of clusters determined by the the K-mean algorithm method was higher than the number of clusters determined by the elbow method by 1. Thus, the number of clusters determined to be acceptable by both method are very similar.
+
+
+###### The analysis for the rest of the images are located inside of the Jupyter notebook file
+
+## Conclusion
+
+Now that we have all of the results of the compressions we can calculate the optimal k for each category by finding the mean of the images within them. For the nature images we find that the algorithm provided an optimal mean of 4, for the buildings it said 3.75 and for the human faces it said 3.3334. Looking at the categories separately we notice that the nature image values seem to contain a larger variety of colors when compared to the other categories which is what can contribute to the increased mean when. Examining the bar charts we made during our EDA process, we see that in every chart for the nature images, there is a clear variance in the RGB values which we said would be a predicting value for the optimal number of clusters given by the elbow graphs. Looking at the bar charts for the building images we see a smaller amount of variance when compared to the nature images, but there still exists some variance in all but the white building. This is again correlated with the higher mean optimal number of clusters when compared to the human faces category. That category had the least amount of variance in the initial RGB bar charts, and this was reflected by it having the lowest mean number of clusters, by a larger margin than the difference between the nature and building images, which places an emphasis on the uniformity of the colors and its relationship with the number of optimal clusters found by the k-means algorithm. Looking at the individual images we found that for the more colorful images, although the algorithm suggested a smaller k value for the best compression, we preferred a larger k-value so that the colors were preserved. At k-values like four, the overall shape of the images was kept and the significant parts of the images were still distinct, but a large portion of the color detail was absent. For the human faces and building photos this was not as much of a problem, but for the nature photos they began to appear as desaturated blobs and since there were large clumps of colors, they lost a large portion of the detail required to distinguish certain parts of the image. From this we can conclude that as we saw a larger variety in the colors of the image, both we and the algorithm preferred a larger k-value, with our eyes preferring significant increases and the algorithm preferring more minor increases in the number of clusters.
